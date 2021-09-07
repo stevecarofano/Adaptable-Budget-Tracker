@@ -4,8 +4,6 @@ let myChart;
 fetch("/api/transaction")
   .then(response => {
     return response.json();
-  }).catch((error) => {
-    console.log(error)
   })
   .then(data => {
     // save db data on global variable
