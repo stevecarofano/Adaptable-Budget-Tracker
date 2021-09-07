@@ -15,15 +15,11 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/budget',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-  }
-);
+const MongoClient = require("mongodb").MongoClient;
+ const client = await new MongoClient(process.env.MONGODB_URI,{ useNewUrlParser: true});
+ client.connect();
+mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
+mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); }); 
 
 // routes
 app.use(require("./routes/api.js"));
