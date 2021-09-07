@@ -15,11 +15,15 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const MongoClient = require("mongodb").MongoClient;
- const client = await new MongoClient(process.env.MONGODB_URI,{ useNewUrlParser: true});
- client.connect();
-mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
-mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); }); 
+mongoose.connect(
+  process.env.MONGODB_URI || 'mongodb://localhost/budget_tracker_db',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+);
 
 // routes
 app.use(require("./routes/api.js"));
